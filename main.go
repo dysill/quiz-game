@@ -2,16 +2,18 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
-	// handle flags for time and file (later)
-	inputCsv := "problems.csv"
+	inputCsv := flag.String("input", "problems.csv", "Input CSV file name")
+	timeLimit := flag.Int("limit", 30, "Time limit")
+	flag.Parse()
 
-	file, err := os.Open(inputCsv)
+	file, err := os.Open(*inputCsv)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,7 +27,7 @@ func main() {
 	var userAnswer string
 	var correctAnswers int
 
-	fmt.Printf("Welcome to the quiz! You have _ seconds to answer the following %d questions:\n", numQuestions)
+	fmt.Printf("Welcome to the quiz! You have %d seconds to answer the following %d questions:\n", *timeLimit, numQuestions)
 	for i, question := range records {
 		fmt.Printf("Problem %d: %s = ", i, question[0])
 		fmt.Scan(&userAnswer)
